@@ -1,0 +1,21 @@
+﻿<Properties StartupConfiguration="{547F61DA-E04F-4428-9D98-EB2F7B2359D6}|">
+  <MonoDevelop.Ide.ItemProperties.SomonesToDoListApp.WebApi PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="SomeonesToDoListApp" expanded="True">
+            <Node name="SomonesToDoListApp.Tests" expanded="True" />
+            <Node name="SomonesToDoListApp.WebApi" expanded="True" selected="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+</Properties>
