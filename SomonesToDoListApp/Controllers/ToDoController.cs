@@ -1,24 +1,20 @@
 ﻿using SomeonesToDoListApp.Services.Interfaces;
 using SomeonesToDoListApp.Services.ViewModels;
-using System;
 using System.Threading.Tasks;
 using System.Web.Http;
 using NLog;
+using System.ComponentModel.DataAnnotations;
 
 namespace SomeonesToDoListApp.Controllers
 {
 	[RoutePrefix("ToDo")]
 	public class ToDoController : ApiController
 	{
-		// Sets up the logger for the current service class
-		private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
-		// to do service property to be injected into the controller  
-		private IToDoService ToDoService { get; set; }
+		IToDoService _toDoService { get; set; }
 
 		public ToDoController(IToDoService toDoService)
 		{
-			ToDoService = toDoService;
+			_toDoService = toDoService;
 		}
 
 		/// <summary>
@@ -28,25 +24,38 @@ namespace SomeonesToDoListApp.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[Route("CreateToDo")]
-		public async Task<IHttpActionResult> CreateToDo([FromBody] ToDoViewModel toDo)
+		public async Task<IHttpActionResult> CreateToDo([FromBody, Required] ToDoViewModel toDo)
 		{
-			var createListResult = await ToDoService.CreateToDoAsync(toDo);
+			var createListResult = await _toDoService.CreateToDoAsync(toDo);
 
 			return Ok(createListResult);
 		}
 
-		/// <summary>
-		/// An HTTP Get request to retrieve all of the to do items
-		/// </summary>
-		/// <returns></returns>
-		[HttpGet]
+        /// <summary>
+        /// An HTTP Post request to create a new to do item
+        /// </summary>
+        /// <param name="toDo"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Route("UpdateToDo")]
+        public async Task<IHttpActionResult> UpdateToDo([FromBody, Required] ToDoViewModel toDo)
+        {
+            var createListResult = await _toDoService.UpdateToDoAsync(toDo);
+
+            return Ok(createListResult);
+        }
+
+        /// <summary>
+        /// An HTTP Get request to retrieve all of the to do items
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
 		[Route("GetToDos")]
 		public async Task<IHttpActionResult> GetToDos()
 		{
-			var toDoItemsList = await ToDoService.GetToDoItemsAsync();
+			var toDoItemsList = await _toDoService.GetToDoItemsAsync();
 
 			return Ok(toDoItemsList);
 		}
-
 	}
 }
