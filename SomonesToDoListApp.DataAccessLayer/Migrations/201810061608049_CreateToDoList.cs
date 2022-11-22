@@ -1,8 +1,7 @@
+using System.Data.Entity.Migrations;
+
 namespace SomeonesToDoListApp.DataAccessLayer.Migrations
-{
-    using System;
-    using System.Data.Entity.Migrations;
-    
+{   
     public partial class CreateToDoList : DbMigration
     {
         public override void Up()
@@ -15,7 +14,6 @@ namespace SomeonesToDoListApp.DataAccessLayer.Migrations
                         ToDoItem = c.String(nullable: false, maxLength: 2048),
                     })
                 .PrimaryKey(t => t.Id);
-            
         }
         
         public override void Down()

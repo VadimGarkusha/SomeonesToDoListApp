@@ -1,3 +1,5 @@
+using SomeonesToDoListApp.Services;
+using SomeonesToDoListApp.Services.Interfaces;
 using System;
 
 using Unity;
@@ -41,7 +43,7 @@ namespace SomeonesToDoListApp
             // container.LoadConfiguration();
 
             // TODO: Register your type's mappings here.
-            // container.RegisterType<IProductRepository, ProductRepository>();
+            container.RegisterType<IToDoService, ToDoService>();
         }
     }
 }

@@ -38,8 +38,7 @@ namespace SomeonesToDoListApp.Services
 
 				// Add the entity to the database context
 				SomeonesToDoListContext.ToDos.Add(toDo);
-
-				await Task.Delay(1000);
+				await SomeonesToDoListContext.SaveChangesAsync();
 
 				// Returns the true for the successfully completed operation
 				return true;

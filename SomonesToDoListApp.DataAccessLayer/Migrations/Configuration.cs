@@ -1,11 +1,7 @@
 ﻿using SomeonesToDoListApp.DataAccessLayer.Context;
 using SomeonesToDoListApp.DataAccessLayer.Entities;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity.Migrations;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SomeonesToDoListApp.DataAccessLayer.Migrations
 {
@@ -36,7 +32,6 @@ namespace SomeonesToDoListApp.DataAccessLayer.Migrations
             };
 
             someonesToDoListContext.ToDos.AddOrUpdate(toDo);
-
         }
 
     }

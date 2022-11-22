@@ -1,18 +1,13 @@
 ﻿using SomeonesToDoListApp.DataAccessLayer.Entities;
 using SomeonesToDoListApp.DataAccessLayer.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SomeonesToDoListApp.DataAccessLayer.Context
 {
 	public class SomeonesToDoListContext : DbContext, ISomeonesToDoListContext
 	{
-
-		public virtual DbSet<ToDo> ToDos { get; set; }
+		public SomeonesToDoListContext() : base("SomeonesToDoListConnection") { }
+        public virtual DbSet<ToDo> ToDos { get; set; }
 
 		/// <inheritdoc />
 		/// <summary>

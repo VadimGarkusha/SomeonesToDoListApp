@@ -21,15 +21,6 @@ namespace SomeonesToDoListApp.Controllers
 			ToDoService = toDoService;
 		}
 
-		// Overriding the IDisposable method to dispose of the injected service if disposing is true 
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing)
-			{
-				ToDoService?.Dispose();
-			}
-		}
-
 		/// <summary>
 		/// An HTTP Post request to create a new to do item
 		/// </summary>
@@ -39,14 +30,9 @@ namespace SomeonesToDoListApp.Controllers
 		[Route("CreateToDo")]
 		public async Task<IHttpActionResult> CreateToDo([FromBody] ToDoViewModel toDo)
 		{
-			try
-			{
-				return Ok(await ToDoService.CreateToDoAsync(toDo));
-			}
-			catch (Exception exception)
-			{
-				throw;
-			}
+			var createListResult = await ToDoService.CreateToDoAsync(toDo);
+
+			return Ok(createListResult);
 		}
 
 		/// <summary>
@@ -57,14 +43,9 @@ namespace SomeonesToDoListApp.Controllers
 		[Route("GetToDos")]
 		public async Task<IHttpActionResult> GetToDos()
 		{
-			try
-			{
-				return Ok(await ToDoService.GetToDoItemsAsync());
-			}
-			catch (Exception exception)
-			{
-				throw;
-			}
+			var toDoItemsList = await ToDoService.GetToDoItemsAsync();
+
+			return Ok(toDoItemsList);
 		}
 
 	}
