@@ -19,10 +19,9 @@ namespace SomeonesToDoListApp
 				AllowAnyMethod = true
 			};
 
-			// Default origin for Angular
-			corsPolicy.Origins.Add("http://localhost:4200");
+			corsPolicy.Origins.Add("http://localhost:3000");
 
-			var corsOptions = new CorsOptions
+            var corsOptions = new CorsOptions
 			{
 				// Configure a callback that will used the selected CORS policy for the given requests
 				PolicyProvider = new CorsPolicyProvider
