@@ -64,18 +64,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoMapperConfiguration.cs" />
-    <Compile Include="Interfaces\IServiceResult.cs" />
     <Compile Include="Interfaces\IToDoService.cs" />
-    <Compile Include="ToDoResources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ToDoResources.resx</DependentUpon>
-    </Compile>
     <Compile Include="ToDoService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\ServiceResult.cs" />
-    <Compile Include="ViewModels\ToDoViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -92,12 +83,6 @@
       <Project>{c754d68e-279c-43cf-b8fd-22399aef21f0}</Project>
       <Name>SomonesToDoListApp.DataAccessLayer</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="ToDoResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>ToDoResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

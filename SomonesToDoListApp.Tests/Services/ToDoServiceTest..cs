@@ -1,7 +1,6 @@
 ﻿using SomeonesToDoListApp.DataAccessLayer.Context;
 using SomeonesToDoListApp.DataAccessLayer.Entities;
 using SomeonesToDoListApp.Services;
-using SomeonesToDoListApp.Services.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Data.Entity;
@@ -9,15 +8,20 @@ using System.Linq;
 using System.Threading.Tasks;
 using SomeonesToDoListApp.Tests.Base;
 using AutoMapper;
+using SomeonesToDoListApp.AutoMapper;
+using SomeonesToDoListApp.ViewModels;
+using SomeonesToDoListApp.Services.Interfaces;
+using AndresToDoListApp.DataAccessLayer.Interfaces;
 
 namespace SomeonesToDoListApp.Tests.Services
 {
     [TestClass]
     public class ToDoServiceTest : TestBase
     {
-        
+        private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+
         [ClassInitialize]
-        public static void InitializeAutoMapper(TestContext testContext)
+        public void InitializeAutoMapper()
         {
             Mapper.Reset();
             AutoMapperConfiguration.Initialize();
@@ -34,14 +38,14 @@ namespace SomeonesToDoListApp.Tests.Services
 
             mockContext.Setup(s => s.ToDos).Returns(mockToDoSet.Object);
 
-            var newToDo = new ToDoViewModel
+            var newToDo = new ToDo
             {
                 Id = 4,
                 ToDoItem = "Find my lost cat"
             };
 
             // act
-            var toDoService = new ToDoService(mockContext.Object);
+            var toDoService = new ToDoService(_unitOfWorkMock.Object);
 
             await toDoService.CreateToDoAsync(newToDo);
 
@@ -62,7 +66,7 @@ namespace SomeonesToDoListApp.Tests.Services
 
             mockContext.Setup(s => s.ToDos).Returns(mockSet.Object);
 
-            var toDoService = new ToDoService(mockContext.Object);
+            var toDoService = new ToDoService(_unitOfWorkMock.Object);
 
             var allToDos = await toDoService.GetToDoItemsAsync();
 
@@ -89,7 +93,7 @@ namespace SomeonesToDoListApp.Tests.Services
             var mockSet = SetupMockSetAsync(new Mock<DbSet<ToDo>>(), toDos);
             mockContext.Setup(s => s.ToDos).Returns(mockSet.Object);
 
-            var toDoService = new ToDoService(mockContext.Object);
+            var toDoService = new ToDoService(_unitOfWorkMock.Object);
 
 
             // assert
@@ -116,7 +120,7 @@ namespace SomeonesToDoListApp.Tests.Services
 
             mockContext.Setup(s => s.ToDos).Returns(mockSet.Object);
 
-            var toDoService = new ToDoService(mockContext.Object);
+            var toDoService = new ToDoService(_unitOfWorkMock.Object);
 
 
             var count = mockContext.Object.ToDos.AsEnumerable().ToList();

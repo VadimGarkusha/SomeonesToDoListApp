@@ -1,35 +1,46 @@
 ﻿using SomeonesToDoListApp.Services.Interfaces;
-using SomeonesToDoListApp.Services.ViewModels;
 using System.Threading.Tasks;
 using System.Web.Http;
-using NLog;
 using System.ComponentModel.DataAnnotations;
+using SomeonesToDoListApp.DataAccessLayer.Entities;
+using SomeonesToDoListApp.ViewModels;
+using AutoMapper;
+using System;
+using AndresToDoListApp;
 
 namespace SomeonesToDoListApp.Controllers
 {
-	[RoutePrefix("ToDo")]
-	public class ToDoController : ApiController
-	{
-		IToDoService _toDoService { get; set; }
+    [RoutePrefix("ToDo")]
+    public class ToDoController : ApiController
+    {
+        private IToDoService _toDoService;
 
-		public ToDoController(IToDoService toDoService)
-		{
-			_toDoService = toDoService;
-		}
+        public ToDoController(IToDoService toDoService)
+        {
+            _toDoService = toDoService;
+        }
 
-		/// <summary>
-		/// An HTTP Post request to create a new to do item
-		/// </summary>
-		/// <param name="toDo"></param>
-		/// <returns></returns>
-		[HttpPost]
-		[Route("CreateToDo")]
-		public async Task<IHttpActionResult> CreateToDo([FromBody, Required] ToDoViewModel toDo)
-		{
-			var createListResult = await _toDoService.CreateToDoAsync(toDo);
+        /// <summary>
+        /// An HTTP Post request to create a new to do item
+        /// </summary>
+        /// <param name="toDoVm"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("CreateToDo")]
+        public async Task<IHttpActionResult> CreateToDo([FromBody, Required] ToDoViewModel toDoVm)
+        {
+            var toDoModel = Mapper.Map<ToDoViewModel, ToDo>(toDoVm);
 
-			return Ok(createListResult);
-		}
+            try
+            {
+                var createListResult = await _toDoService.CreateToDoAsync(toDoModel);
+                return Ok(createListResult);
+            }
+            catch (ArgumentException)
+            {
+                return Ok(new { ErrorMessage = ToDoResources.CannotCreateError });
+            }
+        }
 
         /// <summary>
         /// An HTTP Post request to create a new to do item
@@ -38,11 +49,19 @@ namespace SomeonesToDoListApp.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("UpdateToDo")]
-        public async Task<IHttpActionResult> UpdateToDo([FromBody, Required] ToDoViewModel toDo)
+        public async Task<IHttpActionResult> UpdateToDo([FromBody, Required] ToDoViewModel toDoVm)
         {
-            var createListResult = await _toDoService.UpdateToDoAsync(toDo);
-
-            return Ok(createListResult);
+            var toDoModel = Mapper.Map<ToDoViewModel, ToDo>(toDoVm);
+            
+            try
+            {
+                var updateToDoResult = await _toDoService.UpdateToDoAsync(toDoModel);
+                return Ok(updateToDoResult);
+            }
+            catch (ArgumentException)
+            {
+                return Ok(new { ErrorMessage = ToDoResources.CannotUpdateError });
+            }
         }
 
         /// <summary>
@@ -50,12 +69,12 @@ namespace SomeonesToDoListApp.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-		[Route("GetToDos")]
-		public async Task<IHttpActionResult> GetToDos()
-		{
-			var toDoItemsList = await _toDoService.GetToDoItemsAsync();
+        [Route("GetToDos")]
+        public async Task<IHttpActionResult> GetToDos()
+        {
+            var toDoItemsList = await _toDoService.GetToDoItemsAsync();
 
-			return Ok(toDoItemsList);
-		}
-	}
+            return Ok(toDoItemsList);
+        }
+    }
 }

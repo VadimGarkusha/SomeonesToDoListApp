@@ -6,22 +6,25 @@ using SomeonesToDoListApp.Controllers;
 using SomeonesToDoListApp.DataAccessLayer.Context;
 using SomeonesToDoListApp.DataAccessLayer.Entities;
 using SomeonesToDoListApp.Services;
-using SomeonesToDoListApp.Services.ViewModels;
 using SomeonesToDoListApp.Tests.Base;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using AutoMapper;
+using SomeonesToDoListApp.AutoMapper;
+using SomeonesToDoListApp.ViewModels;
+using SomeonesToDoListApp.Services.Interfaces;
 
 namespace SomeonesToDoListApp.Tests.Controllers
 {
     [TestClass]
     public class ToDoControllerTest : TestBase
     {
+        private Mock<IToDoService> _toDoServiceMock;
+
         [ClassInitialize]
-        public static void InitializeAutoMapper(TestContext testContext)
+        public void InitializeAutoMapper()
         {
-            Mapper.Reset();
-            AutoMapperConfiguration.Initialize();
+            _toDoServiceMock = new Mock<IToDoService>();
         }
 
         [TestMethod]
@@ -42,8 +45,7 @@ namespace SomeonesToDoListApp.Tests.Controllers
             };
 
             // act
-            var toDoService = new ToDoService(mockContext.Object);
-            var toDoController = new ToDoController(toDoService);
+            var toDoController = new ToDoController(_toDoServiceMock.Object);
 
             var controllerActionResult = await toDoController.CreateToDo(newToDo);
 
@@ -69,8 +71,7 @@ namespace SomeonesToDoListApp.Tests.Controllers
             };
 
             // act
-            var toDoService = new ToDoService(mockContext.Object);
-            var toDoController = new ToDoController(toDoService);
+            var toDoController = new ToDoController(_toDoServiceMock.Object);
 
             var controllerActionResult = await toDoController.GetToDos();
 

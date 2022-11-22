@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SomeonesToDoListApp.DataAccessLayer.Entities
 {
-   [Table("dbo.ToDo")]
+   [Table("ToDo")]
    public class ToDo : IToDo
     {
         [Key]

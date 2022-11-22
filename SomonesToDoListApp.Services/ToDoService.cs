@@ -1,85 +1,57 @@
-﻿using SomeonesToDoListApp.DataAccessLayer.Context;
-using SomeonesToDoListApp.Services.Interfaces;
-using SomeonesToDoListApp.Services.ViewModels;
+﻿using SomeonesToDoListApp.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using AutoMapper;
 using SomeonesToDoListApp.DataAccessLayer.Entities;
-using System.Data.Entity;
 using NLog;
-using AndresToDoListApp.Services.Interfaces;
-using AndresToDoListApp.Services.ViewModels;
-using AndresToDoListApp.Services;
+using AndresToDoListApp.DataAccessLayer.Interfaces;
 
 namespace SomeonesToDoListApp.Services
 {
-	public class ToDoService : IToDoService
-	{
-		private SomeonesToDoListContext _someonesToDoListContext { get; set; }
-		private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+    public class ToDoService : IToDoService
+    {
+        private IUnitOfWork _unitOfWork;
+        private readonly Logger _logger = LogManager.GetCurrentClassLogger();
 
-		public ToDoService(SomeonesToDoListContext someonesToDoListContext)
-		{
-			_someonesToDoListContext = someonesToDoListContext;
-		}
+        public ToDoService(IUnitOfWork unitOfWork)
+        {
+            _unitOfWork = unitOfWork;
+        }
 
-		public async Task<IServiceResult<ToDoViewModel>> CreateToDoAsync(ToDoViewModel toDoViewModel)
-		{
-            var result = new ServiceResult<ToDoViewModel>(null);
-
-            if (toDoViewModel.ToDoItem == null)
-			{
-				result.ErrorMessage = ToDoResources.CannotCreateError;
-				return result;
-            }
-
-            try
-			{
-				var toDo = Mapper.Map<ToDoViewModel, ToDo>(toDoViewModel);
-
-				var createdToDo = _someonesToDoListContext.ToDos.Add(toDo);
-
-				await _someonesToDoListContext.SaveChangesAsync();
-
-                result.Result = Mapper.Map<ToDo, ToDoViewModel>(createdToDo);
-				return result;
-			}
-			catch (Exception exception)
-			{
-				_logger.Error(exception, "Error occured while adding a new ToDo item");
-				throw;
-			}
-		}
-
-        public async Task<IServiceResult<bool>> UpdateToDoAsync(ToDoViewModel toDoViewModel)
-		{
-            var toDo = Mapper.Map<ToDoViewModel, ToDo>(toDoViewModel);
-			var result = new ServiceResult<bool>(false);
-
-
-            if (toDoViewModel.ToDoItem == null)
-			{
-                _logger.Error("Tried to update ToDo with null ID");
-				result.ErrorMessage = ToDoResources.CannotUpdateError;
-				return result;
+        public async Task<ToDo> CreateToDoAsync(ToDo newToDo)
+        {
+            if (newToDo.ToDoItem == null)
+            {
+                throw new ArgumentException("ToDo item text cannot be null when creating a new item.");
             }
 
             try
             {
-				var modelToUpdate = await _someonesToDoListContext.ToDos.FindAsync(toDo.Id);
-				if(modelToUpdate == null) 
-				{
-                    _logger.Error("Tried to update ToDo with null ID");
-                    result.ErrorMessage = ToDoResources.CannotUpdateError;
-                    return result;
-                }
+                var createdToDo = _unitOfWork.ToDoRepository.Add(newToDo);
+                await _unitOfWork.Save();
 
-				_someonesToDoListContext.Entry(modelToUpdate).CurrentValues.SetValues(toDo);
+                return createdToDo;
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception, "Error occured while adding a new ToDo item");
+                throw;
+            }
+        }
 
-                await _someonesToDoListContext.SaveChangesAsync();
-                result.Result = true;
-                return result;
+        public async Task<bool> UpdateToDoAsync(ToDo toDo)
+        {
+            if (toDo.ToDoItem == null)
+            {
+                throw new ArgumentException("ToDo item text cannot be null when updating item.");
+            }
+
+            try
+            {
+                _unitOfWork.ToDoRepository.Update(toDo);
+
+                await _unitOfWork.Save();
+                return true;
             }
             catch (Exception exception)
             {
@@ -88,19 +60,19 @@ namespace SomeonesToDoListApp.Services
             }
         }
 
-        public async Task<IEnumerable<ToDoViewModel>> GetToDoItemsAsync()
-		{
-			try
-			{
-				var toDoModels = await _someonesToDoListContext.ToDos.ToListAsync();
+        public async Task<IEnumerable<ToDo>> GetToDoItemsAsync()
+        {
+            try
+            {
+                var toDoModels = await _unitOfWork.ToDoRepository.GetAll();
 
-                return Mapper.Map<IEnumerable<ToDo>, IEnumerable<ToDoViewModel>>(toDoModels);
-			}
-			catch (Exception exception)
-			{
-				_logger.Error(exception, "Error occured while getting all ToDo items");
-				throw;
-			}
-		}
-	}
+                return toDoModels;
+            }
+            catch (Exception exception)
+            {
+                _logger.Error(exception, "Error occured while getting all ToDo items");
+                throw;
+            }
+        }
+    }
 }

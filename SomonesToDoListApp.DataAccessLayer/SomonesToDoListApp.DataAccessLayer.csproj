@@ -52,8 +52,12 @@
   <ItemGroup>
     <Compile Include="Context\SomeonesToDoListContext.cs" />
     <Compile Include="Entities\ToDo.cs" />
-    <Compile Include="Interfaces\IAndresToDoListContext.cs" />
+    <Compile Include="GenericRepository.cs" />
+    <Compile Include="Interfaces\ISomeonesToDoListContext.cs" />
+    <Compile Include="Interfaces\IGenericRepository.cs" />
     <Compile Include="Interfaces\IToDo.cs" />
+    <Compile Include="Interfaces\IToDoRepository.cs" />
+    <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Migrations\201810061608049_CreateToDoList.cs" />
     <Compile Include="Migrations\201810061608049_CreateToDoList.Designer.cs">
       <DependentUpon>201810061608049_CreateToDoList.cs</DependentUpon>
@@ -65,6 +69,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="ToDoRepository.cs" />
+    <Compile Include="UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

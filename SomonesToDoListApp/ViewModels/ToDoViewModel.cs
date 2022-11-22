@@ -1,5 +1,4 @@
-﻿
-namespace SomeonesToDoListApp.Services.ViewModels
+﻿namespace SomeonesToDoListApp.ViewModels
 {
     public class ToDoViewModel
     {

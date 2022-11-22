@@ -26,7 +26,7 @@ namespace SomeonesToDoListApp
 				// Configure a callback that will used the selected CORS policy for the given requests
 				PolicyProvider = new CorsPolicyProvider
 				{
-					PolicyResolver = context => Task.FromResult<CorsPolicy>(corsPolicy)
+					PolicyResolver = context => Task.FromResult(corsPolicy)
 				}
 			};
 
