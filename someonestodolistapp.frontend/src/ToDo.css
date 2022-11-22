@@ -1,0 +1,41 @@
+.todo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+.todo-create-controls button {
+    width: 10rem;
+}
+
+.todo-create-controls input {
+    width: 12rem;
+    padding: 5px;
+}
+
+.todo-create-controls {
+    padding-bottom: 1rem;
+    border-bottom: 2px solid grey;
+}
+
+button {
+    padding: 5px 10px;
+    border-radius: 0;
+    background-color: black;
+    color: white;
+    margin-left: 1rem;
+    border: 1px solid black;
+}
+
+button:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+}
+
+.todo-content {
+    width: 382px;
+}

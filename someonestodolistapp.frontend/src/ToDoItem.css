@@ -1,0 +1,6 @@
+.todo-item {
+    margin-top: 0.5rem;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}

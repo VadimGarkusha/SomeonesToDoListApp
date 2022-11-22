@@ -1,3 +1,4 @@
+import './ToDoItem.css';
 import React, { useState } from "react";
 import axios from "axios";
 
@@ -35,13 +36,13 @@ function ToDoItem({ toDoItem, loadAndUpdateToDoItems }) {
         <>
             {
                 state.isEditModeEnabled ?
-                    <div>
+                    <div className="todo-item">
                         <input value={state.editToDoItem} onInput={e => { setState({ ...state, editToDoItem: e.target.value }); }} />
                         <button onClick={updateToDoItem}>Update</button>
                         <button onClick={cancelEditing}>Cancel</button>
                     </div>
                     :
-                    <div>
+                    <div className="todo-item">
                         <span>{originalToDoValue}</span>
                         <button onClick={toggleEditMode}>Edit</button>
                     </div>

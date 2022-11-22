@@ -43,10 +43,13 @@ function ToDo() {
     return (
         <div className="todo-container">
             <h1>SomeOnes ToDo List</h1>
-            <input value={state.newToDo} onInput={e => { setState({ ...state, newToDo: e.target.value }); }} />
-            <button onClick={createNewToDo}>Add new ToDo</button>
 
-            <div>
+            <div className="todo-create-controls">
+                <input value={state.newToDo} onInput={e => { setState({ ...state, newToDo: e.target.value }); }} />
+                <button onClick={createNewToDo}>Add new ToDo</button>
+            </div>
+            
+            <div className="todo-content">
                 {
                     state.toDoItems.map(item =>
                         <ToDoItem key={item.Id} toDoItem={item} loadAndUpdateToDoItems={loadAndUpdateToDoItems} />
