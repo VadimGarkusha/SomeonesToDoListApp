@@ -51,7 +51,7 @@ namespace AndresToDoListApp.DataAccessLayer
         public virtual void Update(TEntity entityToUpdate)
         {
             dbSet.Attach(entityToUpdate);
-            _context.Entry(entityToUpdate).State = EntityState.Modified;
+            _context.SetModified(entityToUpdate);
         }
     }
 }

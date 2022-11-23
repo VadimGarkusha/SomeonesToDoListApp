@@ -28,5 +28,10 @@ namespace SomeonesToDoListApp.DataAccessLayer.Context
             base.OnModelCreating(modelBuilder);
 
         }
+
+        public virtual void SetModified(object entity)
+        {
+            Entry(entity).State = EntityState.Modified;
+        }
     }
 }
