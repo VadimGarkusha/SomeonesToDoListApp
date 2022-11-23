@@ -23,7 +23,7 @@ namespace SomeonesToDoListApp.Tests.Services
         private const int SAVE_RESULT = 3;
 
         [TestInitialize]
-        public void InitializeAutoMapper()
+        public void Setup()
         {
             var testDate = GetTestData();
 
